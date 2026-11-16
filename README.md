@@ -23,6 +23,11 @@ The loader sorts each directory's image names, uses the first 40 images for
 training, and reserves all remaining images for testing. It refuses to train
 when a class has no held-out image.
 
+The loader also accepts the downloaded archive layout, where images are
+stored in nested directories and named like `漢字_20.png`. In that case, pass
+the archive's `data` directory as `--dataset`; the filename prefix before the
+last underscore is used as the character label.
+
 ## Augmentation and models
 
 Each class starts with 40 training images. The training pipeline repeats those
@@ -42,9 +47,7 @@ classes (13,065 for the full assignment).
 ## Run
 
 ```powershell
-python -m venv C:\tfenv
-C:\tfenv\Scripts\python.exe -m pip install -r requirements.txt
-C:\tfenv\Scripts\python.exe train_character_recognizer.py --dataset .\dataset --expected-classes 4787 --epochs 10
+uv run --python 3.11 --with-requirements requirements.txt train_character_recognizer.py --dataset .\dataset --expected-classes 4787 --epochs 10
 ```
 
 You can also run it through the project launcher:
@@ -53,9 +56,10 @@ You can also run it through the project launcher:
 .\run_training.ps1 -Dataset C:\path\to\dataset -Epochs 10
 ```
 
-On Windows, use a short virtual-environment path such as `C:\tfenv`; TensorFlow
-contains deeply nested package paths that can exceed Windows' default path
-limit when installed inside a long project path.
+The launcher uses `uv` to select Python 3.11 and create/use an isolated
+environment. This avoids Windows' `python.exe` application alias and keeps the
+TensorFlow environment independent from the project directory. If `uv` is not
+on `PATH`, the launcher also checks `%USERPROFILE%\.local\bin\uv.exe`.
 
 The script writes both `.keras` models and `model_comparison.csv` to
 `artifacts/`, and saves the class-to-index mapping in `class_names.txt`.
@@ -74,10 +78,18 @@ different, larger download.
 After training, start the drawing window:
 
 ```powershell
-C:\tfenv\Scripts\python.exe draw_character.py
+uv run --python 3.11 --with-requirements requirements.txt draw_character.py
 ```
 
 Write one Chinese character with the mouse, click **识别**, and the program
 will show the most likely character and the top five probabilities. The model
 must be trained first because the drawing program loads
 `artifacts/best_model.keras` and `artifacts/class_names.txt`.
+
+To let the model learn from your own handwriting, click **学习**, enter the
+correct character, and wait for fine-tuning to finish. The labelled drawing is
+saved under `user_samples/<character>/` and all saved examples are used when
+the model is updated. Only characters already present in
+`artifacts/class_names.txt` can be learned; this prevents the model output
+shape and label mapping from becoming inconsistent. Keep a backup of
+`artifacts/best_model.keras` if you want to restore the original model.

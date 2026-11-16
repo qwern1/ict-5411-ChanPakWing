@@ -1,3 +1,7 @@
 dataset/
 Traditional-Chinese-Handwriting-Dataset-master/
 artifacts/
+.venv/
+trial_artifacts/
+user_samples/
+__pycache__/

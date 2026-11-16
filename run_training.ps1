@@ -7,9 +7,14 @@ param(
     [switch]$AllowDifferentClassCount
 )
 
-$python = "C:\tfenv\Scripts\python.exe"
-if (-not (Test-Path $python)) {
-    throw "TensorFlow environment not found at $python. Create it using the README instructions."
+$uv = Get-Command uv -ErrorAction SilentlyContinue
+if ($null -ne $uv) {
+    $uvPath = $uv.Source
+} else {
+    $uvPath = Join-Path $env:USERPROFILE ".local\bin\uv.exe"
+    if (-not (Test-Path $uvPath)) {
+        throw "uv was not found. Install uv or add it to PATH."
+    }
 }
 
 $arguments = @(
@@ -23,5 +28,5 @@ if ($AllowDifferentClassCount) {
     $arguments += "--allow-different-class-count"
 }
 
-& $python @arguments
+& $uvPath run --python 3.11 --with-requirements (Join-Path $PSScriptRoot "requirements.txt") @arguments
 exit $LASTEXITCODE

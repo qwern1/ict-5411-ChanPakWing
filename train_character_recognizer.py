@@ -43,22 +43,54 @@ def discover_split(
     if not class_dirs:
         raise ValueError(f"No character directories found in {dataset_dir}")
 
+    class_files: list[tuple[str, tuple[Path, ...]]] = []
+    has_directory_layout = any(
+        any(
+            path.is_file() and path.suffix.lower() in SUPPORTED_EXTENSIONS
+            for path in class_dir.iterdir()
+        )
+        for class_dir in class_dirs
+    )
+    if has_directory_layout:
+        class_files = [
+            (
+                class_dir.name,
+                tuple(
+                    sorted(
+                        path
+                        for path in class_dir.iterdir()
+                        if path.is_file()
+                        and path.suffix.lower() in SUPPORTED_EXTENSIONS
+                    )
+                ),
+            )
+            for class_dir in class_dirs
+        ]
+    else:
+        files_by_class: dict[str, list[Path]] = {}
+        for image_path in sorted(
+            path
+            for path in dataset_dir.rglob("*")
+            if path.is_file() and path.suffix.lower() in SUPPORTED_EXTENSIONS
+        ):
+            class_name, separator, _sample_number = image_path.stem.rpartition("_")
+            if not separator or not class_name:
+                continue
+            files_by_class.setdefault(class_name, []).append(image_path)
+        class_files = [
+            (class_name, tuple(files))
+            for class_name, files in sorted(files_by_class.items())
+        ]
+
     train_files: list[tuple[Path, ...]] = []
     test_files: list[tuple[Path, ...]] = []
     class_names: list[str] = []
     skipped_classes: list[str] = []
-    for class_dir in class_dirs:
-        files = tuple(
-            sorted(
-                path
-                for path in class_dir.iterdir()
-                if path.is_file() and path.suffix.lower() in SUPPORTED_EXTENSIONS
-            )
-        )
+    for class_name, files in class_files:
         if len(files) <= train_samples_per_character:
-            skipped_classes.append(f"{class_dir.name} ({len(files)} 张)")
+            skipped_classes.append(f"{class_name} ({len(files)} 张)")
             continue
-        class_names.append(class_dir.name)
+        class_names.append(class_name)
         train_files.append(files[:train_samples_per_character])
         test_files.append(files[train_samples_per_character:])
 

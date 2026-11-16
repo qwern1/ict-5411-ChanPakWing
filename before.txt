@@ -1,5 +1,5 @@
 Use this to train:
-python train_character_recognizer.py --dataset .\dataset --expected-classes 4787 --epochs 10 --batch-size 128
+uv run --python 3.11 --with-requirements requirements.txt train_character_recognizer.py --dataset .\dataset --expected-classes 4787 --epochs 10 --batch-size 128
 
 Use this to draw a character:
-python draw_character.py
+uv run --python 3.11 --with-requirements requirements.txt draw_character.py
