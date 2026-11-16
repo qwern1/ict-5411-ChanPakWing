@@ -54,20 +54,20 @@ classes (13,065 for the full assignment).
 Download the full dataset from the
 [`handwritting_data_all`](https://github.com/chenkenanalytic/handwritting_data_all)
 repository. On Windows, clone it into your `Downloads` folder and extract the
-archive. Set `--dataset` to the extracted `cleaned_data` folder:
+archive. Place the extracted `cleaned_data` folder in the project's `dataset`
+folder:
 
 ```text
-C:\Users\<your-name>\Downloads\handwritting_data_all\all_data\cleaned_data
+.\dataset
 ```
 
 ## Run
 
-From the project directory, run the full dataset training command:
+From the project directory, run:
 
 ```powershell
-cd C:\Users\<your-name>\Desktop\assment\ict-5412-
 .\.venv\Scripts\python.exe train_character_recognizer.py `
-  --dataset "C:\Users\<your-name>\Downloads\handwritting_data_all\all_data\cleaned_data" `
+  --dataset .\dataset `
   --output .\artifacts `
   --epochs 10 `
   --batch-size 128 `
