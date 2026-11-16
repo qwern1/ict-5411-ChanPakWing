@@ -95,9 +95,10 @@ the required first-40/remaining-test split, so the loader skips them and trains
 on the 4,787 eligible classes. Use `--expected-classes 4787
 --allow-different-class-count` when experimenting with that smaller dataset.
 
-## Write a character and recognise it
+## Test handwritten recognition
 
-After training, start the drawing window:
+After training finishes and `artifacts\best_model.keras` has been created,
+start the recognition window:
 
 ```powershell
 .\.venv\Scripts\python.exe draw_character.py `
@@ -105,10 +106,10 @@ After training, start the drawing window:
   --labels .\artifacts\class_names.txt
 ```
 
-Write one Chinese character on the canvas and click **辨識**. The program
-shows the most likely character and the top five probabilities. Click **清除**
-to start another test. The interface uses mouse handwriting; it does not
-upload a photograph.
+Draw one Chinese character on the canvas and click **辨識**. The program
+displays the most likely character and the five highest probabilities. Click
+**清除** before drawing the next character. This interface accepts mouse
+handwriting only; photograph upload is not supported.
 
 ## Accuracy and result interpretation
 
