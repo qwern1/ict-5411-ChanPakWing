@@ -34,6 +34,7 @@ class CharacterDrawer:
 
         self.root = tk.Tk()
         self.root.title("繁體中文手寫字元辨識")
+        self.root.protocol("WM_DELETE_WINDOW", self.root.destroy)
         self.canvas = tk.Canvas(
             self.root,
             width=CANVAS_SIZE,
