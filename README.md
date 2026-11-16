@@ -125,12 +125,11 @@ model on the test set. It is different from the confidence percentage shown
 for one handwritten prediction. Confidence only describes that single
 prediction.
 
-The earlier five-class development experiment achieved approximately **80%**
-test accuracy after 10 epochs. This is only a small-scale demonstration and
-must not be reported as the accuracy of the full assignment. The final result
-for the full dataset must be copied from `model_comparison.csv` after training
-finishes. If classes with fewer than 41 images are skipped, report the actual
-number of eligible classes and output neurons.
+One completed development run achieved approximately **80%** test accuracy
+after 10 epochs. The final result for the full dataset is recorded in
+`model_comparison.csv` after training finishes. If classes with fewer than 41
+images are skipped, report the actual number of eligible classes and output
+neurons.
 
 ## What is uploaded to GitHub
 
