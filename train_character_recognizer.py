@@ -52,20 +52,25 @@ def discover_split(
         for class_dir in class_dirs
     )
     if has_directory_layout:
-        class_files = [
-            (
-                class_dir.name,
-                tuple(
-                    sorted(
-                        path
-                        for path in class_dir.iterdir()
-                        if path.is_file()
-                        and path.suffix.lower() in SUPPORTED_EXTENSIONS
-                    )
-                ),
+        class_files = []
+        for class_dir in class_dirs:
+            files = tuple(
+                sorted(
+                    path
+                    for path in class_dir.iterdir()
+                    if path.is_file()
+                    and path.suffix.lower() in SUPPORTED_EXTENSIONS
+                )
             )
-            for class_dir in class_dirs
-        ]
+            if not files:
+                class_files.append((class_dir.name, files))
+                continue
+            class_name = class_dir.name
+            if class_dir.name.isdecimal():
+                filename_label, separator, _sample_number = files[0].stem.rpartition("_")
+                if separator and filename_label:
+                    class_name = filename_label
+            class_files.append((class_name, files))
     else:
         files_by_class: dict[str, list[Path]] = {}
         for image_path in sorted(
