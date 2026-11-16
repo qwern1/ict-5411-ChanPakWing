@@ -1,8 +1,13 @@
 # DIT5411 Chinese Handwritten Character Recognition
 
 This project implements the DIT5411 machine-learning assignment with
-TensorFlow. It recognises the 13,065 Chinese character classes in the
-[Traditional Chinese Handwriting Dataset](https://github.com/AI-FREE-Team/Traditional-Chinese-Handwriting-Dataset).
+TensorFlow. It supports the 13,065-class full Chinese handwriting dataset
+and its smaller 4,803-class common-word version.
+
+The GitHub repository contains the source code and documentation only.
+The image dataset, virtual environment, user samples, and trained `.keras`
+models are not committed because of their size. Download the dataset and
+train the models locally as described below.
 
 ## Dataset layout
 
@@ -44,10 +49,32 @@ Two models are trained and compared:
 Both models finish with a softmax layer whose width is the number of dataset
 classes (13,065 for the full assignment).
 
+## Download the dataset
+
+The common-word dataset is available from the
+[Traditional Chinese Handwriting Dataset](https://github.com/AI-FREE-Team/Traditional-Chinese-Handwriting-Dataset)
+repository. It contains 4,803 character classes.
+
+The full assignment dataset contains 13,065 classes and 684,677 images. It
+is distributed separately in the
+[`handwritting_data_all`](https://github.com/chenkenanalytic/handwritting_data_all)
+repository. On Windows, clone it into `Downloads` and extract the split
+archive so that the images are available at:
+
+```text
+C:\Users\<your-name>\Downloads\handwritting_data_all\all_data\cleaned_data
+```
+
+The full archive has 13,065 classes, but 43 classes contain fewer than 41
+images. Because this project requires 40 training images plus at least one
+test image per class, the loader skips those classes and trains on 13,022
+eligible classes. This limitation must be reported with the experimental
+results; the output layer therefore has 13,022 neurons for this archive.
+
 ## Run
 
 ```powershell
-uv run --python 3.11 --with-requirements requirements.txt train_character_recognizer.py --dataset .\dataset --expected-classes 4787 --epochs 10
+uv run --python 3.11 --with-requirements requirements.txt train_character_recognizer.py --dataset .\dataset --expected-classes 13022 --epochs 10 --allow-different-class-count
 ```
 
 You can also run it through the project launcher:
@@ -63,15 +90,14 @@ on `PATH`, the launcher also checks `%USERPROFILE%\.local\bin\uv.exe`.
 
 The script writes both `.keras` models and `model_comparison.csv` to
 `artifacts/`, and saves the class-to-index mapping in `class_names.txt`.
-For a small development subset, use
-`--allow-different-class-count`; the submitted full run must use all 13,065
-classes. Record the resulting test accuracies in the final report.
+These generated files remain local and are intentionally excluded from
+GitHub. Record the resulting test accuracies in the final report.
 
 The downloaded `Traditional-Chinese-Handwriting-Dataset-master` archive is the
 4,803-character common-word dataset. Sixteen folders contain too few images for
 the required first-40/remaining-test split, so the loader skips them and trains
-on the 4,787 eligible classes. The 13,065-class assignment dataset is a
-different, larger download.
+on the 4,787 eligible classes. Use `--expected-classes 4787
+--allow-different-class-count` when experimenting with that smaller dataset.
 
 ## Write a character and recognise it
 
