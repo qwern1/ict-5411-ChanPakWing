@@ -4,15 +4,12 @@ from __future__ import annotations
 
 import argparse
 import tkinter as tk
-from datetime import datetime, timezone
 from pathlib import Path
-from tkinter import messagebox, simpledialog
+from tkinter import messagebox
 
 import numpy as np
 import tensorflow as tf
 from PIL import Image, ImageDraw, ImageOps
-
-from learn_from_examples import fine_tune
 
 CANVAS_SIZE = 400
 IMAGE_SIZE = (64, 64)
@@ -31,12 +28,12 @@ class CharacterDrawer:
         self.labels = labels_path.read_text(encoding="utf-8").splitlines()
         if self.model.output_shape[-1] != len(self.labels):
             raise ValueError(
-                f"模型有 {self.model.output_shape[-1]} 个输出，但标签文件有 "
-                f"{len(self.labels)} 个类别"
+                f"模型有 {self.model.output_shape[-1]} 個輸出，但標籤檔案有 "
+                f"{len(self.labels)} 個類別"
             )
 
         self.root = tk.Tk()
-        self.root.title("中文手写字符识别")
+        self.root.title("繁體中文手寫字元辨識")
         self.canvas = tk.Canvas(
             self.root,
             width=CANVAS_SIZE,
@@ -48,7 +45,7 @@ class CharacterDrawer:
         self.image = Image.new("L", (CANVAS_SIZE, CANVAS_SIZE), color=255)
         self.drawer = ImageDraw.Draw(self.image)
         self.last_point: tuple[int, int] | None = None
-        self.result = tk.StringVar(value="请在上方写一个汉字")
+        self.result = tk.StringVar(value="請在上方寫一個漢字")
 
         self.canvas.bind("<Button-1>", self.start_stroke)
         self.canvas.bind("<B1-Motion>", self.draw_stroke)
@@ -56,10 +53,7 @@ class CharacterDrawer:
 
         controls = tk.Frame(self.root)
         controls.pack(pady=(0, 12))
-        tk.Button(controls, text="识别", command=self.predict).pack(
-            side=tk.LEFT, padx=4
-        )
-        tk.Button(controls, text="学习", command=self.learn).pack(
+        tk.Button(controls, text="辨識", command=self.predict).pack(
             side=tk.LEFT, padx=4
         )
         tk.Button(controls, text="清除", command=self.clear).pack(side=tk.LEFT, padx=4)
@@ -98,13 +92,13 @@ class CharacterDrawer:
         self.canvas.delete("all")
         self.image = Image.new("L", (CANVAS_SIZE, CANVAS_SIZE), color=255)
         self.drawer = ImageDraw.Draw(self.image)
-        self.result.set("请在上方写一个汉字")
+        self.result.set("請在上方寫一個漢字")
 
     def _prepare_input(self) -> np.ndarray:
         ink = ImageOps.invert(self.image)
         bounding_box = ink.getbbox()
         if bounding_box is None:
-            raise ValueError("请先在画布上写一个汉字")
+            raise ValueError("請先在畫布上寫一個漢字")
 
         character = self.image.crop(bounding_box)
         side = max(character.size)
@@ -136,56 +130,13 @@ class CharacterDrawer:
         )
         confidence = float(probabilities[best_index])
         if confidence < MIN_CONFIDENCE:
-            result = f"无法可靠识别（最高置信度 {confidence:.1%}）"
-            message = f"当前模型可能没有训练这个字符。\n\n候选结果：{top_results}"
+            result = f"無法可靠辨識（最高信心度 {confidence:.1%}）"
+            message = f"目前模型可能尚未訓練此字元。\n\n候選結果：{top_results}"
         else:
-            result = f"识别结果：{self.labels[best_index]}（{confidence:.1%}）"
-            message = f"最可能的字符：{self.labels[best_index]}\n\n{top_results}"
+            result = f"辨識結果：{self.labels[best_index]}（{confidence:.1%}）"
+            message = f"最可能的字元：{self.labels[best_index]}\n\n{top_results}"
         self.result.set(result)
-        messagebox.showinfo("识别结果", message)
-
-    def learn(self) -> None:
-        try:
-            input_image = self._prepare_input()
-        except ValueError as error:
-            messagebox.showwarning("提示", str(error))
-            return
-
-        label = simpledialog.askstring(
-            "添加学习样本",
-            "请输入这幅字的正确汉字：",
-            parent=self.root,
-        )
-        if label is None:
-            return
-        label = label.strip()
-        if label not in self.labels:
-            messagebox.showerror(
-                "无法学习",
-                "这个汉字不在当前模型的类别中，不能新增类别。"
-                "请使用训练数据中已有的汉字。",
-            )
-            return
-
-        label_dir = self.examples_dir / label
-        label_dir.mkdir(parents=True, exist_ok=True)
-        timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
-        image_path = label_dir / f"{timestamp}.png"
-        Image.fromarray((input_image * 255).astype(np.uint8), mode="L").save(
-            image_path
-        )
-        try:
-            fine_tune(self.model_path, self.labels_path, self.examples_dir)
-            self.model = tf.keras.models.load_model(self.model_path)
-        except (OSError, ValueError, RuntimeError) as error:
-            messagebox.showerror("学习失败", str(error))
-            return
-        self.result.set(f"已学习：{label}")
-        messagebox.showinfo(
-            "学习完成",
-            f"已保存样本并更新模型：{label}\n"
-            f"累计样本目录：{self.examples_dir}",
-        )
+        messagebox.showinfo("辨識結果", message)
 
     def run(self) -> None:
         self.root.mainloop()
@@ -204,9 +155,9 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     if not args.model.is_file():
-        raise FileNotFoundError(f"找不到模型文件：{args.model}")
+        raise FileNotFoundError(f"找不到模型檔案：{args.model}")
     if not args.labels.is_file():
-        raise FileNotFoundError(f"找不到类别标签文件：{args.labels}")
+        raise FileNotFoundError(f"找不到類別標籤檔案：{args.labels}")
     CharacterDrawer(args.model, args.labels, args.examples).run()
 
 
