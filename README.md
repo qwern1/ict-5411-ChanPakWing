@@ -97,13 +97,12 @@ on the 4,787 eligible classes. Use `--expected-classes 4787
 
 ## Test handwritten recognition
 
-After training finishes and `artifacts\best_model.keras` has been created,
-start the recognition window:
+To test the available trained model, start the recognition window:
 
 ```powershell
 .\.venv\Scripts\python.exe draw_character.py `
-  --model .\artifacts\best_model.keras `
-  --labels .\artifacts\class_names.txt
+  --model .\full_trial_artifacts\compact_cnn.keras `
+  --labels .\full_trial_artifacts\class_names.txt
 ```
 
 Draw one Chinese character on the canvas and click **辨識**. The program
