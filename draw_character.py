@@ -14,7 +14,7 @@ from PIL import Image, ImageDraw, ImageOps
 CANVAS_SIZE = 400
 IMAGE_SIZE = (64, 64)
 BRUSH_WIDTH = 28
-MIN_CONFIDENCE = 0.5
+MIN_CONFIDENCE = 0.0
 
 
 class CharacterDrawer:
