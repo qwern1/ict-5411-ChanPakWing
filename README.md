@@ -62,25 +62,32 @@ C:\Users\<your-name>\Downloads\handwritting_data_all\all_data\cleaned_data
 
 ## Run
 
-```powershell
-uv run --python 3.11 --with-requirements requirements.txt train_character_recognizer.py --dataset .\dataset --expected-classes 13022 --epochs 10 --allow-different-class-count
-```
-
-You can also run it through the project launcher:
+From the project directory, run the full dataset training command:
 
 ```powershell
-.\run_training.ps1 -Dataset C:\path\to\dataset -Epochs 10
+cd C:\Users\<your-name>\Desktop\assment\ict-5412-
+.\.venv\Scripts\python.exe train_character_recognizer.py `
+  --dataset "C:\Users\<your-name>\Downloads\handwritting_data_all\all_data\cleaned_data" `
+  --output .\artifacts `
+  --epochs 10 `
+  --batch-size 128 `
+  --expected-classes 13022
 ```
 
-The launcher uses `uv` to select Python 3.11 and create/use an isolated
-environment. This avoids Windows' `python.exe` application alias and keeps the
-TensorFlow environment independent from the project directory. If `uv` is not
-on `PATH`, the launcher also checks `%USERPROFILE%\.local\bin\uv.exe`.
+The training compares two CNN models and saves the results in `artifacts\`:
 
-The script writes both `.keras` models and `model_comparison.csv` to
-`artifacts/`, and saves the class-to-index mapping in `class_names.txt`.
-These generated files remain local and are intentionally excluded from
-GitHub. Record the resulting test accuracies in the final report.
+```powershell
+artifacts\compact_cnn.keras
+artifacts\deep_cnn.keras
+artifacts\best_model.keras
+artifacts\class_names.txt
+artifacts\model_comparison.csv
+```
+
+`best_model.keras` is copied from the model with the highest held-out test
+accuracy. Keep the generated files local; they are not required in GitHub.
+Copy the two model accuracies from `model_comparison.csv` into the final
+report.
 
 The downloaded `Traditional-Chinese-Handwriting-Dataset-master` archive is the
 4,803-character common-word dataset. Sixteen folders contain too few images for
@@ -93,22 +100,15 @@ on the 4,787 eligible classes. Use `--expected-classes 4787
 After training, start the drawing window:
 
 ```powershell
-uv run --python 3.11 --with-requirements requirements.txt draw_character.py
+.\.venv\Scripts\python.exe draw_character.py `
+  --model .\artifacts\best_model.keras `
+  --labels .\artifacts\class_names.txt
 ```
 
-Write one Chinese character with the mouse, click **识别**, and the program
-will show the most likely character and the top five probabilities. The model
-currently tests handwritten input drawn on the canvas; it does not upload a
-photograph. The model must be trained first because the drawing program loads
-`artifacts/best_model.keras` and `artifacts/class_names.txt`.
-
-To let the model learn from your own handwriting, click **学习**, enter the
-correct character, and wait for fine-tuning to finish. The labelled drawing is
-saved under `user_samples/<character>/` and all saved examples are used when
-the model is updated. Only characters already present in
-`artifacts/class_names.txt` can be learned; this prevents the model output
-shape and label mapping from becoming inconsistent. Keep a backup of
-`artifacts/best_model.keras` if you want to restore the original model.
+Write one Chinese character on the canvas and click **辨識**. The program
+shows the most likely character and the top five probabilities. Click **清除**
+to start another test. The interface uses mouse handwriting; it does not
+upload a photograph.
 
 ## Accuracy and result interpretation
 
