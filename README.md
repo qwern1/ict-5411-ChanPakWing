@@ -100,10 +100,12 @@ on the 4,787 eligible classes. Use `--expected-classes 4787
 To test the available trained model, start the recognition window:
 
 ```powershell
-.\.venv\Scripts\python.exe draw_character.py `
-  --model .\full_trial_artifacts\compact_cnn.keras `
-  --labels .\full_trial_artifacts\class_names.txt
+.\.venv\Scripts\python.exe draw_character.py
 ```
+
+The program uses `full_trial_artifacts\compact_cnn.keras` and
+`full_trial_artifacts\class_names.txt` by default. Custom model and label files
+can still be supplied with `--model` and `--labels`.
 
 Draw one Chinese character on the canvas and click **辨識**. The program
 displays the most likely character and the five highest probabilities. Click

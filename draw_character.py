@@ -144,9 +144,11 @@ class CharacterDrawer:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--model", type=Path, default=Path("artifacts/best_model.keras"))
     parser.add_argument(
-        "--labels", type=Path, default=Path("artifacts/class_names.txt")
+        "--model", type=Path, default=Path("full_trial_artifacts/compact_cnn.keras")
+    )
+    parser.add_argument(
+        "--labels", type=Path, default=Path("full_trial_artifacts/class_names.txt")
     )
     parser.add_argument("--examples", type=Path, default=Path("user_samples"))
     return parser.parse_args()
