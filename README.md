@@ -131,10 +131,3 @@ after 10 epochs. The final result for the full dataset is recorded in
 images are skipped, report the actual number of eligible classes and output
 neurons.
 
-## What is uploaded to GitHub
-
-This repository contains the Python source code, README, dependency files, and
-a partial CNN model and label file for testing. The complete image dataset,
-virtual environment, user samples, and final training results are not included
-because of their size. Download the dataset and run the training commands
-locally to produce the final models.
