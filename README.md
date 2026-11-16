@@ -109,7 +109,8 @@ uv run --python 3.11 --with-requirements requirements.txt draw_character.py
 
 Write one Chinese character with the mouse, click **识别**, and the program
 will show the most likely character and the top five probabilities. The model
-must be trained first because the drawing program loads
+currently tests handwritten input drawn on the canvas; it does not upload a
+photograph. The model must be trained first because the drawing program loads
 `artifacts/best_model.keras` and `artifacts/class_names.txt`.
 
 To let the model learn from your own handwriting, click **学习**, enter the
@@ -119,3 +120,31 @@ the model is updated. Only characters already present in
 `artifacts/class_names.txt` can be learned; this prevents the model output
 shape and label mapping from becoming inconsistent. Keep a backup of
 `artifacts/best_model.keras` if you want to restore the original model.
+
+## Accuracy and result interpretation
+
+Test accuracy is calculated using the held-out images that were not used for
+training:
+
+```text
+test accuracy = correctly classified test images / all test images
+```
+
+The percentage printed after training is the measured accuracy of the selected
+model on the test set. It is different from the confidence percentage shown
+for one handwritten prediction. Confidence only describes that single
+prediction.
+
+The earlier five-class development experiment achieved approximately **80%**
+test accuracy after 10 epochs. This is only a small-scale demonstration and
+must not be reported as the accuracy of the full assignment. The final result
+for the full dataset must be copied from `model_comparison.csv` after training
+finishes. If classes with fewer than 41 images are skipped, report the actual
+number of eligible classes and output neurons.
+
+## What is uploaded to GitHub
+
+This repository contains the Python source code, README, and dependency files.
+The large image dataset, virtual environment, user samples, and generated
+`.keras` models are intentionally not uploaded. Download the dataset and run
+the training commands locally before starting the recognition program.
