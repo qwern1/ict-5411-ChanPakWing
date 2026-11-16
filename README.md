@@ -51,25 +51,14 @@ classes (13,065 for the full assignment).
 
 ## Download the dataset
 
-The common-word dataset is available from the
-[Traditional Chinese Handwriting Dataset](https://github.com/AI-FREE-Team/Traditional-Chinese-Handwriting-Dataset)
-repository. It contains 4,803 character classes.
-
-The full assignment dataset contains 13,065 classes and 684,677 images. It
-is distributed separately in the
+Download the full dataset from the
 [`handwritting_data_all`](https://github.com/chenkenanalytic/handwritting_data_all)
-repository. On Windows, clone it into `Downloads` and extract the split
-archive so that the images are available at:
+repository. On Windows, clone it into your `Downloads` folder and extract the
+archive. Set `--dataset` to the extracted `cleaned_data` folder:
 
 ```text
 C:\Users\<your-name>\Downloads\handwritting_data_all\all_data\cleaned_data
 ```
-
-The full archive has 13,065 classes, but 43 classes contain fewer than 41
-images. Because this project requires 40 training images plus at least one
-test image per class, the loader skips those classes and trains on 13,022
-eligible classes. This limitation must be reported with the experimental
-results; the output layer therefore has 13,022 neurons for this archive.
 
 ## Run
 
