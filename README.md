@@ -133,7 +133,8 @@ neurons.
 
 ## What is uploaded to GitHub
 
-This repository contains the Python source code, README, and dependency files.
-The large image dataset, virtual environment, user samples, and generated
-`.keras` models are intentionally not uploaded. Download the dataset and run
-the training commands locally before starting the recognition program.
+This repository contains the Python source code, README, dependency files, and
+a partial CNN model and label file for testing. The complete image dataset,
+virtual environment, user samples, and final training results are not included
+because of their size. Download the dataset and run the training commands
+locally to produce the final models.
