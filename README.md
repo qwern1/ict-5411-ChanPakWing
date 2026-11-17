@@ -136,11 +136,20 @@ model on the test set. It is different from the confidence percentage shown
 for one handwritten prediction. Confidence only describes that single
 prediction.
 
-One completed development run achieved approximately **80%** test accuracy
-after 10 epochs. The final result for the full dataset is recorded in
-`model_comparison.csv` after training finishes. If classes with fewer than 41
-images are skipped, report the actual number of eligible classes and output
-neurons.
+### Training progress examples
+
+The training result depends strongly on the number of classes and epochs:
+
+* In a full-dataset run with 13,022 eligible classes and 10 epochs, the
+  training accuracy reached approximately **25.76%** and the held-out test
+  accuracy was **0.1237%**.
+* In the complete 20-class experiment with 20 epochs, the held-out test
+  accuracy reached **60.6154%**. This result is specific to the 20-class
+  experiment and cannot be compared directly with the 13,022-class run.
+
+The final result for the full dataset is recorded in `model_comparison.csv`
+after training finishes. If classes with fewer than 41 images are skipped,
+report the actual number of eligible classes and output neurons.
 
 ### Current test run
 
@@ -153,8 +162,7 @@ held-out test accuracies:
 | `deep_cnn` | 6.4615% |
 
 The best model in this run was `compact_cnn` at **60.6154%**. These values are
-from a small test run and should not be presented as the final full-dataset
-result.
+the final results for the 20-class experiment.
 
 ## Assignment deliverables
 
@@ -184,14 +192,18 @@ compared fairly.
 
 ### Reported comparison
 
-For the current small test run, the comparison is:
+For the complete 20-class experiment, the comparison is:
 
 | Model | Test accuracy |
 |---|---:|
 | `compact_cnn` | 60.6154% |
 | `deep_cnn` | 6.4615% |
 
-Therefore, `compact_cnn` is the selected model for this test run. A final
-submission should replace these values with the results from the complete
-dataset run.
+Therefore, `compact_cnn` is the selected model for the 20-class experiment.
+
+## References
+
+* [Traditional Chinese Handwriting Dataset](https://github.com/AI-FREE-Team/Traditional-Chinese-Handwriting-Dataset)
+* [Handwritten Digit Recognition using Keras and TensorFlow](https://github.com/kimanalytics/Handwritten-Digit-Recognition-using-Keras-and-TensorFlow)
+* [OpenCV Image Augmentation Reference](https://github.com/darshitajain/Introduction-to-OpenCV)
 
