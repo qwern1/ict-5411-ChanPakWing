@@ -114,6 +114,14 @@ displays the most likely character and the five highest probabilities. Click
 **清除** before drawing the next character. This interface accepts mouse
 handwriting only; photograph upload is not supported.
 
+### Recognition demonstration
+
+The recognition window demonstrates that the application can visually analyse
+handwritten strokes and make a character prediction. The result is not always
+certain: the interface shows the predicted character, its confidence, and
+the five most likely candidates. A low confidence score means that the model
+can see the handwriting but is unsure which character it represents.
+
 ## Accuracy and result interpretation
 
 Test accuracy is calculated using the held-out images that were not used for

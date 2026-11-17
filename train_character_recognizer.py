@@ -131,9 +131,13 @@ def _load_image(path: tf.Tensor) -> tf.Tensor:
 def _augmentation_pipeline() -> keras.Sequential:
     return keras.Sequential(
         [
-            layers.RandomRotation(0.08, fill_mode="constant"),
-            layers.RandomTranslation(0.10, 0.10, fill_mode="constant"),
-            layers.RandomZoom((-0.15, 0.15), fill_mode="constant"),
+            layers.RandomRotation(0.08, fill_mode="constant", fill_value=1.0),
+            layers.RandomTranslation(
+                0.10, 0.10, fill_mode="constant", fill_value=1.0
+            ),
+            layers.RandomZoom(
+                (-0.15, 0.15), fill_mode="constant", fill_value=1.0
+            ),
         ],
         name="offline_style_augmentation",
     )
