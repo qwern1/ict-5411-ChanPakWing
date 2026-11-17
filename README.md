@@ -201,6 +201,8 @@ For the complete 20-class experiment, the comparison is:
 
 Therefore, `compact_cnn` is the selected model for the 20-class experiment.
 
+![20-class model accuracy comparison](model_accuracy_comparison.png)
+
 ## References
 
 * [Traditional Chinese Handwriting Dataset](https://github.com/AI-FREE-Team/Traditional-Chinese-Handwriting-Dataset)
