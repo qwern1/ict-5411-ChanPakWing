@@ -9,6 +9,8 @@ The image dataset, virtual environment, user samples, and trained `.keras`
 models are not committed because of their size. Download the dataset and
 train the models locally as described below.
 
+Project repository: [github.com/qwern1/ict-5412-](https://github.com/qwern1/ict-5412-)
+
 ## Dataset layout
 
 Extract the dataset so that each character has its own directory:
@@ -131,4 +133,57 @@ after 10 epochs. The final result for the full dataset is recorded in
 `model_comparison.csv` after training finishes. If classes with fewer than 41
 images are skipped, report the actual number of eligible classes and output
 neurons.
+
+### Current test run
+
+The current test run used the same training pipeline and produced these
+held-out test accuracies:
+
+| Model | Test accuracy |
+|---|---:|
+| `compact_cnn` | 60.6154% |
+| `deep_cnn` | 6.4615% |
+
+The best model in this run was `compact_cnn` at **60.6154%**. These values are
+from a small test run and should not be presented as the final full-dataset
+result.
+
+## Assignment deliverables
+
+### Model structures
+
+* **compact_cnn** uses three convolutional layers with 32, 64, and 128
+  filters, max pooling, global average pooling, and dropout.
+* **deep_cnn** uses four batch-normalised convolutional blocks with 32, 64,
+  128, and 256 filters, followed by global average pooling, a dense layer,
+  and dropout.
+* Both models use a final softmax layer with one output neuron per character
+  class.
+
+### Augmentation method
+
+The training set initially contains 40 images per character. The pipeline
+repeats each class until it has at least 200 training samples and applies a
+new random transformation to each sample:
+
+* rotation up to 0.08;
+* translation up to 10% horizontally and vertically;
+* zoom between -15% and +15%.
+
+The held-out test images are not augmented. The two models are trained with
+the same split and augmentation settings so their test accuracies can be
+compared fairly.
+
+### Reported comparison
+
+For the current small test run, the comparison is:
+
+| Model | Test accuracy |
+|---|---:|
+| `compact_cnn` | 60.6154% |
+| `deep_cnn` | 6.4615% |
+
+Therefore, `compact_cnn` is the selected model for this test run. A final
+submission should replace these values with the results from the complete
+dataset run.
 
