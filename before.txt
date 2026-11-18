@@ -1,5 +1,28 @@
 Use this to train:
-uv run --python 3.11 --with-requirements requirements.txt train_character_recognizer.py --dataset .\dataset --expected-classes 4787 --epochs 10 --batch-size 128
+uv run --python 3.11 --with-requirements requirements.txt train_character_recognizer.py --dataset .\dataset --expected-classes 4787 --epochs 3 --batch-size 128
 
 Use this to draw a character:
 uv run --python 3.11 --with-requirements requirements.txt draw_character.py
+
+Use NVIDIA GPU training on Windows with WSL2:
+
+1. Install the latest NVIDIA Windows driver, then restart Windows.
+2. Open PowerShell as Administrator and install Ubuntu:
+   wsl --install -d Ubuntu
+3. Open Ubuntu and run:
+   cd /mnt/c/Users/user/Desktop/assment/ict-5412-
+   sudo apt update
+   sudo apt install -y python3.11-venv python3-pip
+   python3 -m venv .venv
+   source .venv/bin/activate
+   python -m pip install --upgrade pip
+   python -m pip install "tensorflow[and-cuda]==2.16.2"
+   python -m pip install numpy==1.26.4 "pillow>=10,<12"
+4. Check that TensorFlow can see the GPU:
+   python -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
+5. Train with the GPU:
+   python train_character_recognizer.py --dataset ./dataset --output ./artifacts --epochs 3 --batch-size 128 --expected-classes 13022
+6. If GPU memory is insufficient, reduce the batch size to 32:
+   python train_character_recognizer.py --dataset ./dataset --output ./artifacts --epochs 3 --batch-size 32 --expected-classes 13022
+7. Monitor GPU usage in another Ubuntu window:
+   watch -n 1 nvidia-smi

@@ -40,8 +40,6 @@ def discover_split(
 ) -> DatasetSplit:
     """Find character folders and split each folder without mixing train/test data."""
     class_dirs = sorted(path for path in dataset_dir.iterdir() if path.is_dir())
-    if not class_dirs:
-        raise ValueError(f"No character directories found in {dataset_dir}")
 
     class_files: list[tuple[str, tuple[Path, ...]]] = []
     has_directory_layout = any(
@@ -271,7 +269,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dataset", type=Path, required=True)
     parser.add_argument("--output", type=Path, default=Path("artifacts"))
-    parser.add_argument("--epochs", type=int, default=10)
+    parser.add_argument("--epochs", type=int, default=3)
     parser.add_argument("--batch-size", type=int, default=128)
     parser.add_argument("--expected-classes", type=int, default=13065)
     parser.add_argument(

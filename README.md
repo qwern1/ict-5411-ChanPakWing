@@ -9,7 +9,7 @@ The image dataset, virtual environment, user samples, and trained `.keras`
 models are not committed because of their size. Download the dataset and
 train the models locally as described below.
 
-https://github.com/qwern1/ict-5411-ChanPakWing
+https://github.com/qwern1/DIT5411-ChanPakWing
 
 ## Dataset layout
 
